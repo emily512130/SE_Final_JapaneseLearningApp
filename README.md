@@ -32,18 +32,18 @@ It integrates a React-based frontend with a MongoDB Atlas backend to provide rea
 Open your terminal in the project root directory and run:
 ```bash
 npm install
-
+```
 ### 3. Execution
 To run the system, you need to start both the backend and frontend:
 
 **Start Backend:**
 ```bash
 node server/server.js
-
+```
 **Start Frontend:**
 ```bash
 npm start
-
+```
 The application will launch at http://localhost:3000.
 
 ## 📂 Folder Structure
@@ -53,5 +53,5 @@ The application will launch at http://localhost:3000.
 
 - **README.md**: Project documentation.
 
-##🔗 Repository Link
-GitHub: https://github.com/emily512130/SE_Final_JapaneseLearningApp
+## 🔗 Repository Link
+-**GitHub**: [https://github.com/emily512130/SE_Final_JapaneseLearningApp](https://github.com/emily512130/SE_Final_JapaneseLearningApp)
