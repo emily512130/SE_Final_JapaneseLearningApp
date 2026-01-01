@@ -905,8 +905,8 @@ function App() {
                         borderBottom: '1px solid #f0f0f0',
                         textAlign: 'left'
                       }}>
-                        <span style={{ color: '#a0aec0', fontSize: '13px', width: '80px' }}>
-                          {new Date(act.timestamp).toLocaleDateString()}
+                        <span style={{ color: '#a0aec0', fontSize: '15px', width: '150px' }}>
+                          {new Date(act.timestamp).toLocaleString('en-US')}
                         </span>
                         <span style={{ flex: 1, fontWeight: '500', marginLeft: '10px' }}>
                           {act.action === 'completed' ? '✅ Completed' : '📝 Attempted'} {act.lessonTitle}
