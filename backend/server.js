@@ -17,6 +17,45 @@ app.use(express.json());
 // Get MongoDB URI from environment variables
 const uri = process.env.MONGODB_URI;
 
+// Default
+const seedDefaultLessons = async () => {
+  try {
+    await Lesson.deleteMany({}); 
+    await Lesson.create([
+      { 
+        title: "Hiragana Basic", 
+        content: [
+          { japanese: "あ", romaji: "a", english: "a", options: ["a", "i", "u"]},
+          { japanese: "い", romaji: "i", english: "i", options: ["i", "u", "e"]},
+          { japanese: "う", romaji: "u", english: "u", options: ["a", "u", "e"]}
+        ] 
+      },
+      {
+        title: "Daily Greetings",
+        content: [
+          { japanese: "Arigato", romaji: "Arigato", english: "Thank you", options: ["Thank you", "Hello", "Sorry"] },
+          { japanese: "Sayonara", romaji: "Sayonara", english: "Goodbye", options: ["Goodbye", "Hello", "Sorry"] },
+          { japanese: "Konichiwa", romaji: "Konichiwa", english: "Hello", options: ["Thank you", "Hello", "Sorry"] }
+        ]
+      },
+      {
+        title: "Numbers 1-5",
+        content: [
+          { japanese: "Ichi", romaji: "Ichi", english: "1", options: ["1", "4", "5"] },
+          { japanese: "Ni", romaji: "Ni", english: "2", options: ["1", "2", "3"] },
+          { japanese: "San", romaji: "San", english: "3", options: ["2", "3", "4"] },
+          { japanese: "Shi", romaji: "Shi", english: "4" , options: ["1", "4", "5"]},
+          { japanese: "Go", romaji: "Go", english: "5" , options: ["2", "4", "5"]}
+        ]
+      }
+    ]);
+    console.log("✅ Default lessons seeded!");
+  } catch (err) {
+    console.error("❌ Seeding failed:", err.message);
+  }
+};
+
+
 // Connect to MongoDB
 mongoose.connect(uri)
   .then(async () => { 
@@ -270,6 +309,7 @@ app.post('/api/system/reset', async (req, res) => {
     await Result.deleteMany({});      
     await Bookmark.deleteMany({});   
     await Activity.deleteMany({});    
+    await seedDefaultLessons();
     
     res.json({ message: "System has been fully reset. Admin account preserved." });
   } catch (error) {
