@@ -532,9 +532,20 @@ function App() {
 
   // Calculate students who are struggling (failed 2 or more lessons)
   const strugglingStudents = Object.entries(failedLessons || {})
-    .filter(([_, lessonList]) => lessonList && lessonList.length >= 2)
-    .map(([name, lessonList]) => ({ name, count: lessonList.length }))
-    .sort((a, b) => b.count - a.count);
+  .map(([name, lessonList]) => {
+
+    const passedIds = completedLessons[name] || [];
+
+    const uniqueStrugglingLessonIds = [...new Set(lessonList.filter(id => !passedIds.includes(id)))];
+
+    return { 
+      name: name, 
+      count: uniqueStrugglingLessonIds.length, 
+      lessonIds: uniqueStrugglingLessonIds 
+    };
+  })
+  .filter(stu => stu.count > 0) 
+  .sort((a, b) => b.count - a.count);
 
   // --- 0. Login View ---
   if (!user) {
@@ -1106,7 +1117,7 @@ function App() {
                 {strugglingStudents.length > 0 ? (
                   strugglingStudents.map(stu => (
                     <div key={stu.name} style={{ padding: '10px', color: '#d32f2f', background: '#ffebee', marginBottom: '5px', borderRadius: '4px' }}>
-                      👤 <strong>{stu.name}</strong> has failed {stu.count} quizzes repeatedly.
+                      👤 <strong>{stu.name}</strong> has failed {stu.count} quizze(s).
                     </div>
                   ))
                 ) : <p style={{ color: '#4caf50', fontWeight: 'bold' }}>All students are doing great! ✨</p>}

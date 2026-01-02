@@ -15,43 +15,64 @@ This application is a specialized management tool for Japanese language educator
 It integrates a React-based frontend with a MongoDB Atlas backend to provide real-time student performance analytics and learning insights.
 
 ### Key Features:
-- **Automated Analytics**: Automatically processes quiz scores to calculate class pass/fail rates.
-- **Teacher Dashboard**: Visualizes learning performance using Recharts for intuitive data interpretation.
-- **Intelligent Alerting**: Detects lessons with high failure rates and marks them as high-difficulty content.
-- **Data Integrity**: Fully integrated with MongoDB Atlas to ensure persistent and reliable student records.
+- **Real-time Activity Logs**: Chronological tracking of student actions with precise timestamps.
+- **Automated Analytics**: Processes quiz scores to calculate class pass/fail rates automatically.
+- **Intelligent Alerting**: Dynamically identifies students needing support based on current failure gaps.
+- **Global Difficulty Tracking**: Aggregates bookmarked vocabulary to highlight challenging content.
+- **Data Integrity**: Fully integrated with MongoDB Atlas for persistent and reliable cloud storage.
 
 ---
 
 ## 🛠️ How to Build and Run
 
 ### 1. Prerequisites
-- **Node.js**: Version 16.x or higher
-- **Database**: MongoDB Atlas instance
+Before running the application, ensure the following tools are installed:
+- **Node.js**: The JavaScript runtime required to run both the server and the frontend. Version 24.12.0 or Higher
+- **NPM**: Included with Node.js to manage project dependencies.
 
 ### 2. Installation
-Open your terminal in the project root directory and run:
+This project consists of two parts: the Frontend (React) and the Backend (Node/Express). You must install dependencies for both.
+
+**Frontend Setup:** Open your terminal in the main project folder and run:
 ```bash
+# Install React and dashboard UI libraries
 npm install
 ```
-### 3. Execution
-To run the system, you need to start both the backend and frontend:
 
-**Start Backend:**
+**Backend Setup:** Navigate to the server directory and install the database and API libraries:
 ```bash
+# Navigate to the server folder
+cd server
+
+# Install Express, Mongoose, and other backend tools
+npm install
+```
+
+### 3. Execution
+You need to have two terminal windows open simultaneously to run the full system.
+
+**Terminal 1: Start Backend:**
+```bash
+# From the root directory
 node server/server.js
 ```
-**Start Frontend:**
+(You should see: "✅ Successfully connected to MongoDB Atlas!")
+
+**Terminal 2: Start Frontend:**
 ```bash
+# From the root directory
 npm start
 ```
 The application will launch at http://localhost:3000.
 
 ## 📂 Folder Structure
-- **/src**: Frontend components (Dashboard, Charts, UI).
+- **/src**: Frontend React components, visual charts, and student activity logic.
 
-- **/server**: Backend API and MongoDB connection logic.
+- **/server**: Backend Node.js API, Express routes, and MongoDB Atlas connection.
 
-- **README.md**: Project documentation.
+- **/server/models**: Mongoose schemas for Users, Results, Activities, and Bookmarks.
+
+- **README.md**: Full project documentation and setup guide.
 
 ## 🔗 Repository Link
 -**GitHub**: [https://github.com/emily512130/SE_Final_JapaneseLearningApp](https://github.com/emily512130/SE_Final_JapaneseLearningApp)
