@@ -1681,7 +1681,7 @@ function App() {
                       <span style={{ color: '#38a169', background: '#f0fff4', padding: '2px 10px', borderRadius: '10px', fontSize: '12px' }}>Active</span>
                     </div>
                     <div style={{ width: '180px', display: 'flex', justifyContent: 'center', gap: '8px' }}>
-                      <button onClick={() => setEditingQuiz(lesson)} style={{ background: '#ebf8ff', color: '#3182ce', border: 'none', padding: '6px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>Edit</button>
+                      <button onClick={() => setEditingLesson(lesson)} style={{ background: '#ebf8ff', color: '#3182ce', border: 'none', padding: '6px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>Edit</button>
                       <button onClick={() => handleDeleteLesson(lesson._id)} style={{ background: '#fff5f5', color: '#e53e3e', border: 'none', padding: '6px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>Delete</button>
                     </div>
                   </div>
@@ -1712,19 +1712,56 @@ function App() {
                   {(quizData[editingLesson._id] || []).map((item, idx) => (
                     <div key={idx} style={{ background: 'white', padding: '15px', borderRadius: '12px', border: '1px solid #bee3f8', fontSize: '14px' }}>
                       <div style={{ color: '#3182ce', fontWeight: 'bold', marginBottom: '5px' }}>Q{idx + 1}</div>
-                      <div>{item.q}</div>
-                      <div style={{ color: '#718096', fontSize: '12px' }}>Ans: {item.a}</div>
+                      <div>{item.japanese}</div>
+                      <div style={{ color: '#718096', fontSize: '12px' }}>Ans: {item.english}</div>
                     </div>
                   ))}
                 </div>
                 <button 
                   style={{ width: '100%', padding: '15px', background: '#3182ce', color: 'white', border: 'none', borderRadius: '12px', fontWeight: 'bold', cursor: 'pointer' }}
-                  onClick={() => {
+                  onClick={async () => {
                     const newQ = prompt("Enter a Japanese word:");
                     const newA = prompt("Enter correct translation:");
+                    
                     if (newQ && newA) {
-                      const newQuestionObj = { q: newQ, a: newA, options: [newA, "wrong1", "wrong2"].sort(() => Math.random() - 0.5) };
-                      setQuizData({ ...quizData, [editingLesson._id]: [...(quizData[editingLesson._id] || []), newQuestionObj] });
+                      
+                      const newQuestionObj = { 
+                        japanese: newQ, 
+                        romaji: newQ, 
+                        english: newA, 
+                        options: [newA, "Wrong 1", "Wrong 2"].sort(() => Math.random() - 0.5) 
+                      };
+
+                      // Add new question
+                      const currentQuestions = quizData[editingLesson._id] || [];
+                      const updatedContent = [...currentQuestions, newQuestionObj];
+
+                      try {
+                        // Send to Backend
+                        const response = await fetch(`http://localhost:5000/api/lessons/${editingLesson._id}`, {
+                          method: 'PUT',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            title: editingLesson.title,
+                            content: updatedContent 
+                          }),
+                        });
+
+                        if (response.ok) {
+                          const savedLesson = await response.json();
+                          // Update state
+                          setQuizData(prev => ({ 
+                            ...prev, 
+                            [editingLesson._id]: savedLesson.content 
+                          }));
+                          alert("✅ Successfully saved to MongoDB!");
+                        } else {
+                          alert("❌ Failed to save to database.");
+                        }
+                      } catch (error) {
+                        console.error("Update error:", error);
+                        alert("Network error.");
+                      }
                     }
                   }}
                 >
